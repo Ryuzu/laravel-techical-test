@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa322c53454393ed775cfe4807d54a50",
+    "content-hash": "5ae1bcdf1804f1f931ff04eaf0417a15",
     "packages": [
         {
             "name": "brick/math",
@@ -60,6 +60,63 @@
                 }
             ],
             "time": "2023-01-15T23:15:59+00:00"
+        },
+        {
+            "name": "byancode/laravel-exercise-1",
+            "version": "0.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/byancode/laravel-exercise-1.git",
+                "reference": "98606571b5e8417a7fbbd83f98a02a433b404944"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/byancode/laravel-exercise-1/zipball/98606571b5e8417a7fbbd83f98a02a433b404944",
+                "reference": "98606571b5e8417a7fbbd83f98a02a433b404944",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^10.0",
+                "php": "^7.4|^8.1|^8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Byancode\\LaravelExercise1\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Byancode\\LaravelExercise1\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "byancode",
+                    "email": "byancode@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is my package laravel-exercise-1",
+            "homepage": "https://github.com/byancode/laravel-exercise-1",
+            "keywords": [
+                "byancode",
+                "laravel-exercise-1"
+            ],
+            "support": {
+                "issues": "https://github.com/byancode/laravel-exercise-1/issues",
+                "source": "https://github.com/byancode/laravel-exercise-1/tree/0.0.4"
+            },
+            "time": "2023-08-22T19:57:29+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
