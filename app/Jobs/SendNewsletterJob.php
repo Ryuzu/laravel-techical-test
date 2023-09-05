@@ -18,14 +18,13 @@ class SendNewsletterJob implements ShouldQueue
 
     protected $notification;
 
-    public function __construct(User $user, Notification $notification)
+    public function __construct(User $user)
     {
-        $this->notification = $this->notification->first()->title;
         $this->user = $user;
     }
 
     public function handle()
     {
-        info("Mail sent to" . $this->user->email . "Title:  ", $this->notification);
+        $this->user->update(['email_sent' => true]);
     }
 }

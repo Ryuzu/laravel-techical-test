@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\SendNewsletterJob;
 use App\Mail\NotificationShippedMail;
 use App\Models\User;
 use App\Notifications\NewsletterNotification;
@@ -16,21 +17,20 @@ class SendNewsletterCommand extends Command
 
     public function handle()
     {
-        $chunks = 500;
-        $delay = 500;
-        $totalUsers = 0;
+        $totalUsers = 500;
+        $batchSize = 100;
 
-        /*$users = User::all();
+        for ($offset = 0; $offset < $totalUsers; $offset += $batchSize) {
+            $users = User::where('email_sent', false)
+                ->limit($batchSize)
+                ->offset($offset)
+                ->get();
 
-        foreach($users as $user) {
-            $user->email_sent = true;
-            $user->save();
-            Notification::send($this->user, new NewsletterNotification());
-        }*/
+            foreach ($users as $user) {
+                dispatch(new SendNewsletterJob($user))->onQueue('newsletter');
+            }
+        }
 
-        User::where('email_sent', false)->chunk(function ($chunked_users){
-
-        })
-
+        $this->info('Newsletter sending tasks added to the queue.');
     }
 }
