@@ -2,29 +2,30 @@
 
 namespace App\Jobs;
 
-use App\Models\Notification;
+use App\Mail\NotificationShipped;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Notification;
 
 class SendNewsletterJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $user;
-
-    protected $notification;
+    private $user;
 
     public function __construct(User $user)
     {
         $this->user = $user;
     }
 
-    public function handle()
+    public function handle(): void
     {
-        $this->user->update(['email_sent' => true]);
+//        Notification::send($this->user, new NotificationShipped());
+//        \Mail::to($this->user->email)->send(new NotificationShipped());
+        info('Sending email to ' . $this->user->email);
     }
 }

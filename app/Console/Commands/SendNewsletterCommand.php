@@ -3,34 +3,30 @@
 namespace App\Console\Commands;
 
 use App\Jobs\SendNewsletterJob;
-use App\Mail\NotificationShippedMail;
+use App\Mail\NotificationShipped;
 use App\Models\User;
-use App\Notifications\NewsletterNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Notification;
+use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class SendNewsletterCommand extends Command
 {
-    protected $signature = 'send:newsletter';
+    protected $signature = 'users:send-newsletter';
 
     protected $description = 'Command description';
 
     public function handle()
     {
-        $totalUsers = 500;
-        $batchSize = 100;
-
-        for ($offset = 0; $offset < $totalUsers; $offset += $batchSize) {
-            $users = User::where('email_sent', false)
-                ->limit($batchSize)
-                ->offset($offset)
-                ->get();
-
+        User::with('notifications')->chunk(100, function ($users) {
             foreach ($users as $user) {
-                dispatch(new SendNewsletterJob($user))->onQueue('newsletter');
+                if ($user->notifications->isEmpty()) {
+                    $user->notifications()->attach(1);
+//                    dispatch(new SendNewsletterJob($user));
+                    \Mail::to($user)->queue(new NotificationShipped());
+                }
             }
-        }
-
-        $this->info('Newsletter sending tasks added to the queue.');
+            info('Sleeping...');
+            sleep(5);
+        });
     }
 }
