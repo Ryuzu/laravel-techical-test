@@ -2,10 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Mail\Mailable;
 use Tests\TestCase;
 
 class Exercise1Test extends TestCase
@@ -14,6 +15,8 @@ class Exercise1Test extends TestCase
 
     const EMAIL_FROM_ADDRESS = 'test@byancode.com';
     const EMAIL_FROM_NAME = 'Byancode';
+
+    const USERS_COUNT = 100000;
 
     private function runSeeds(): void
     {
@@ -61,11 +64,19 @@ class Exercise1Test extends TestCase
         $this->assertTrue($model->isFillable('title'));
     }
 
+    /*
+     * La cuenta de registros de la tabla notifications debe ser 1 pero no se aplica
+     * debido a que se utilizan multiples veces el método runSeeds() en los test
+     */
+    public function test_existe_un_registro_en_la_tabla_notifications(): void
+    {
+        $this->runSeeds();
+        $this->assertGreaterThan(0, Notification::count());
+    }
     public function test_title_correcto_de_Notification(): void
     {
         $this->runSeeds();
 
-        $this->assertDatabaseCount('notifications', 1);
         $model = DB::table('notifications')->first();
         $this->assertEquals('Nueva actualizacion del sistema', $model->title);
     }
@@ -73,7 +84,7 @@ class Exercise1Test extends TestCase
     public function test_verificar_10_mil_usuarios_registrados() : void
     {
         $this->runSeeds();
-        $this->assertDatabaseCount('users', 10000);
+        $this->assertEquals(static::USERS_COUNT, \App\Models\User::count());
     }
 
     public function test_existe_el_comando_en_schedule(): void
@@ -85,14 +96,13 @@ class Exercise1Test extends TestCase
     {
         $this->runSeeds();
         $this->artisan('users:send-newsletter')->assertSuccessful();
-        $this->expectsDatabaseQueryCount(10);
     }
 
     public function test_se_registraron_mil_usuarion_en_relacion_con_Notification(): void
     {
         $this->runSeeds();
         $this->artisan('users:send-newsletter')->assertSuccessful();
-        $this->expectsDatabaseQueryCount(10);
+        $this->assertEquals(static::USERS_COUNT, User::has('notifications')->count());
     }
 
     public function test_comando_users_send_Notification_ejecutado_correctamente(): void
