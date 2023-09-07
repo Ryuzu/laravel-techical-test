@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Mail\NotificationShippedMail;
+use App\Mail\NotificationShipped;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -23,7 +23,7 @@ class NewsletterNotification extends Notification implements ShouldQueue
 
     public function toMail($notifiable)
     {
-        return (new NotificationShippedMail())->to($notifiable);
+        return (new NotificationShipped())->to($notifiable->email);
     }
 
     public function toArray($notifiable)
