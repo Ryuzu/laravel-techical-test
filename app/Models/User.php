@@ -21,7 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'email_sent'
     ];
 
     /**
@@ -42,6 +41,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'email_sent' => 'boolean'
     ];
+
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class, 'notification_user', 'user_id', 'notification_id');
+    }
 }
