@@ -1,66 +1,54 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ESTADO : COMPLETADO
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# 📦 Ejercicio 1: Envío de email masivos
 
-## About Laravel
+Envío en masa de un correo promocional a 1,000,000 usuarios sin afectar el rendimiento principal de la aplicación.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 🕵 **Normativas**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- ⛔ prohibido paquetes externos
+- ⛔ prohibido inteligencia artificial
+- ⛔ prohibido github copilot
+- ✅ permitido documentacion de laravel
+- ✅ permitido google, stackoverflow
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🛠 **Configuración Inicial:**
 
-## Learning Laravel
+1. **Instalacion** ejercicio laravel:
+```bash
+composer require byancode/laravel-exercise-1
+```
+2. **Service Provider** ejecuta el comando:
+```bash
+php artisan vendor:publish --provider="Byancode\LaravelExercise1\ServiceProvider"
+```
+3. **Variables de Entorno:**
+```properties
+MAIL_FROM_ADDRESS="test@byancode.com"
+MAIL_FROM_NAME="Byancode"
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 📋 **Informacion adicional:**
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. **Modelo `Notification`:** [reference](https://laravel.com/docs/10.x/eloquent-relationships#many-to-many-model-structure)
+    - Crea un modelo llamado `Notification` con los siguientes atributos:
+        - `id`
+        - `title`
+    - Establece una relación `belongsToMany` con el modelo `User`.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. **Población de Datos (Seeders):** [reference](https://laravel.com/docs/10.x/seeding#writing-seeders)
+    - Llena la tabla `users` con 1,000,000 registros de usuarios ficticios.
+    - Agrega un registro en la tabla `notifications`, donde el contenido del atributo `title` sea: **'Nueva actualización del sistema'**.
 
-## Laravel Sponsors
+3. **Comando Personalizado:** [reference](https://laravel.com/docs/10.x/artisan#generating-commands)
+    - Crea un comando que pueda invocarse como: php artisan `users:send-newsletter`.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+4. **Clase Mailable `NotificationShipped`:** [reference](https://laravel.com/docs/10.x/mail#generating-mailables)
+    - Crea una clase mailable llamada `NotificationShipped`.
+    - En el constructor, recibe el modelo `Notification` como parámetro.
 
-### Premium Partners
+5. **Programación del Comando:** [reference](https://laravel.com/docs/10.x/scheduling#scheduling-artisan-commands)
+    - Programa el comando `users:send-newsletter` en el `Kernel` de la consola, para que se ejecute cada minuto.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 📒 NOTA:
+> El modelo `Notification` servira para registrar los usuarios que se les envio un email mediante la relacion `BelongsToMany`
